@@ -1,8 +1,9 @@
-const posts = require("../db.js")
+//const posts = require("../db.js")
 const fs = require("fs")
 const connection = require("../data/connection.js")
+const { error } = require("console")
 
-const index = (req, res) => {
+/* const index = (req, res) => {
     let list = "";
     for (let i = 0; i < posts.length; i++) {
         let post = posts[i];
@@ -19,6 +20,14 @@ const index = (req, res) => {
         list += markup;
     }
     res.send(list)
+} */
+
+function index(req, res) {
+    const sql = "SELECT * FROM posts"
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: "Database query failed" })
+        res.json(results);
+    });
 }
 
 const show = (req, res) => {
