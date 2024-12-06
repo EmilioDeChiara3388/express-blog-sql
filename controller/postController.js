@@ -31,7 +31,6 @@ function index(req, res) {
 }
 
 function destroy(req, res) {
-    console.log(req.params);
 
     const { title } = req.params;
     connection.query("DELETE FROM posts WHERE title = ?", [title], (err) => {
@@ -40,7 +39,16 @@ function destroy(req, res) {
     });
 }
 
-const show = (req, res) => {
+function show(req, res) {
+    const { id } = req.params;
+    connection.query("SELECT * FROM posts WHERE id = ?", [id], (err, results) => {
+        if (err) return res.status(500).json({ error: "Database query failed" });
+        if (results.length === 0) return res.status(404).json({ error: "Post non trovato!" })
+        res.json(results[0])
+    })
+}
+
+/* const show = (req, res) => {
 
     const post = posts.find(post => post.slug.toLowerCase() === (req.params.slug))
     console.log(post);
@@ -53,7 +61,7 @@ const show = (req, res) => {
     res.json({
         data: post
     })
-}
+} */
 
 const store = (req, res) => {
     const post = {
