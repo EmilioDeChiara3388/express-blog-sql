@@ -1,4 +1,4 @@
-//const posts = require("../db.js")
+const posts = require("../db.js")
 const fs = require("fs")
 const connection = require("../data/connection.js")
 const { error } = require("console")
@@ -27,6 +27,16 @@ function index(req, res) {
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: "Database query failed" })
         res.json(results);
+    });
+}
+
+function destroy(req, res) {
+    console.log(req.params);
+
+    const { title } = req.params;
+    connection.query("DELETE FROM posts WHERE title = ?", [title], (err) => {
+        if (err) return res.status(500).json({ error: "Post non eliminato!" })
+        res.sendStatus(204);
     });
 }
 
@@ -80,7 +90,7 @@ const update = (req, res) => {
     })
 }
 
-const destroy = (req, res) => {
+/* const destroy = (req, res) => {
     const post = posts.find(post => post.slug.toLowerCase() === req.params.slug)
     if (!post) {
         return res.status(404).json({
@@ -93,7 +103,8 @@ const destroy = (req, res) => {
         status: 200,
         data: newPosts
     })
-}
+} */
+
 
 
 module.exports = {
