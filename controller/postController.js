@@ -1,5 +1,6 @@
 const posts = require("../db.js")
 const fs = require("fs")
+const connection = require("../data/connection.js")
 
 const index = (req, res) => {
     let list = "";
